@@ -24,6 +24,11 @@ function verificarToken(req, res, next) {
 }
 
 app.use("/appCliente", express.static("cliente_rest")); 
+
+// Si se entra a la dirección principal, redirigimos a la aplicación del gestor
+app.get("/", function (req, res) {
+    res.redirect("/appCliente/index_gestor.html");
+});
 app.use(express.json());
 
 /*
@@ -277,7 +282,7 @@ app.delete("/api/recursos/:id", function (req, res) {
         "DELETE FROM recursos where id= ?", [req.params.id],
         function(err, resultado){
             if(err){
-                if(err.errno === "23503"){   // clave ajena: hay reservas/reseñas asociadas
+                if(err.code === "23503"){   // clave ajena: hay reservas/reseñas asociadas
                     return res.status(400).json("No se puede eliminar: el recurso tiene reservas o reseñas asociadas");
                 }
                 console.error(err); return res.status(500).json("Error del servidor");
@@ -349,10 +354,11 @@ app.post("/api/area_salud", function (req, res) {
 
 
 
-var server = app.listen(3000, function() {
+var PUERTO = process.env.PORT || 3000;   // Render pone PORT; en tu PC se usa 3000
+var server = app.listen(PUERTO, function() {
     console.log("---------------------------------------");
-    console.log("Servidor activo en puerto 3000");
-    console.log("URL: http://localhost:3000/appCliente/index_gestor.html");
+    console.log("Servidor activo en puerto " + PUERTO);
+    console.log("URL local: http://localhost:" + PUERTO + "/appCliente/index_gestor.html");
     console.log("---------------------------------------");
 });
 
