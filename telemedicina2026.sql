@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-10-2026 a las 16:21:40
+-- Tiempo de generación: 18-10-2026 a las 16:40:12
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -20,41 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `telemedicina2026`
 --
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `areas_medicas`
---
-
-CREATE TABLE `areas_medicas` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `areas_medicas`
---
-
-INSERT INTO `areas_medicas` (`id`, `nombre`) VALUES
-(1, 'Alergología'),
-(2, 'Anestesiología'),
-(3, 'Cardiología'),
-(4, 'Cirugía General'),
-(5, 'Dermatología'),
-(6, 'Aparato Digestivo'),
-(7, 'Endocrinología'),
-(8, 'Ginecología'),
-(9, 'Hematología'),
-(10, 'Medicina Interna'),
-(11, 'Neumología'),
-(12, 'Neurología'),
-(13, 'Oftalmología'),
-(14, 'Oncología'),
-(15, 'Pediatría'),
-(16, 'Psiquiatría'),
-(17, 'Traumatología'),
-(18, 'Urología');
 
 -- --------------------------------------------------------
 
@@ -290,23 +255,22 @@ CREATE TABLE `sanitarios` (
   `apellidos` varchar(25) NOT NULL,
   `usuario` varchar(25) NOT NULL,
   `contra` varchar(25) NOT NULL,
-  `area` int(11) NOT NULL,
-  `id_area` int(11) DEFAULT NULL
+  `area` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `sanitarios`
 --
 
-INSERT INTO `sanitarios` (`id`, `nombre`, `apellidos`, `usuario`, `contra`, `area`, `id_area`) VALUES
-(1, 'Paula', 'Artes Rodriguez', 'par45', '1234', 0, 3),
-(2, 'Pepe', 'Rodríguez Orduño', 'pro60', '13456', 0, 15),
-(3, 'Lucía', 'Sánchez Gómez', 'lsg22', '9876', 0, 3),
-(4, 'Marcos', 'López Vega', 'mlv88', 'qwerty', 0, 17),
-(5, 'Elena', 'Beltrán Ruiz', 'ebr10', 'admin2024', 0, 12),
-(6, 'Paula', 'Artes Rodriguez', 'par12', '12345', 0, 15),
-(7, 'Nerea', 'Artés Muñoz', 'nam03', '1', 0, 14),
-(8, 'Gregorio', 'Artés García ', 'Gag1', '1', 0, 3);
+INSERT INTO `sanitarios` (`id`, `nombre`, `apellidos`, `usuario`, `contra`, `area`) VALUES
+(1, 'Paula', 'Artes Rodriguez', 'par45', '1234', 0),
+(2, 'Pepe', 'Rodríguez Orduño', 'pro60', '13456', 0),
+(3, 'Lucía', 'Sánchez Gómez', 'lsg22', '9876', 0),
+(4, 'Marcos', 'López Vega', 'mlv88', 'qwerty', 0),
+(5, 'Elena', 'Beltrán Ruiz', 'ebr10', 'admin2024', 0),
+(6, 'Paula', 'Artes Rodriguez', 'par12', '12345', 0),
+(7, 'Nerea', 'Artés Muñoz', 'nam03', '1', 0),
+(8, 'Gregorio', 'Artés García ', 'Gag1', '1', 0);
 
 -- --------------------------------------------------------
 
@@ -334,12 +298,6 @@ INSERT INTO `ubicaciones` (`id`, `nombre`) VALUES
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `areas_medicas`
---
-ALTER TABLE `areas_medicas`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `areas_salud`
@@ -396,8 +354,7 @@ ALTER TABLE `reservas`
 -- Indices de la tabla `sanitarios`
 --
 ALTER TABLE `sanitarios`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `sanitario_area` (`id_area`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `ubicaciones`
@@ -408,12 +365,6 @@ ALTER TABLE `ubicaciones`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
-
---
--- AUTO_INCREMENT de la tabla `areas_medicas`
---
-ALTER TABLE `areas_medicas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
@@ -500,12 +451,6 @@ ALTER TABLE `resenyas`
 ALTER TABLE `reservas`
   ADD CONSTRAINT `reservas1` FOREIGN KEY (`recurso`) REFERENCES `recursos` (`id`),
   ADD CONSTRAINT `reservas2` FOREIGN KEY (`sanitario`) REFERENCES `sanitarios` (`id`);
-
---
--- Filtros para la tabla `sanitarios`
---
-ALTER TABLE `sanitarios`
-  ADD CONSTRAINT `sanitario_area` FOREIGN KEY (`id_area`) REFERENCES `areas_medicas` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
