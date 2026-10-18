@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Recursos Hospitalarios</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="vista-login" class="vista activa">
+        <header>Aplicación Gestor</header>
+        <h3>ACCESO</h3>
+        <div class="campo-formulario">
+            <label>Usuario:</label>
+            <input type="text" id="log-user">
+        </div>
+        <div class="campo-formulario">
+            <label>Contraseña:</label>
+            <input type="password" id="log-pass">
+        </div>
+        <br>
+        <button onclick="login()">Entrar</button>
+        <button onclick="prepararRegistro()">Registrarse</button>
+    </div>
+
+    <div id="vista-registro" class="vista">
+        <header>Aplicación Gestor</header>
+        <h3>DATOS GESTOR</h3>
+        <div class="campo-formulario">
+            <label>Nombre:</label>
+            <input type="text" id="reg-nombre">
+        </div>
+        <div class="campo-formulario">
+            <label>Apellidos:</label>
+            <input type="text" id="reg-apellidos">
+        </div>
+        <div class="campo-formulario">
+            <label>Login:</label>
+            <input type="text" id="reg-login">
+        </div>
+        <div class="campo-formulario">
+            <label>Contraseña:</label>
+            <input type="password" id="reg-password">
+        </div>
+        <br>
+        <button onclick="guardarGestor()">Guardar</button>
+        <button onclick="cancelarRegistro()">Cancelar</button>
+    </div>
+
+    <div id="vista-inicio" class="vista">
+        <header>Aplicación Gestor</header>
+        <h3>INICIO</h3>
+        <p>Bienvenido <span id="nombre-bienvenida"></span> 
+            <button onclick="prepararEdicionGestor()">Editar datos</button>
+        </p>
+
+        <h4>Búsqueda de recursos</h4>
+        <div class="campo-formulario">
+            <label>Categoría:</label>
+            <select id="bus-categoria" onchange="actualizarModelosBusqueda()"></select>
+        </div>
+        <div class="campo-formulario">
+            <label>Modelo:</label>
+            <select id="bus-modelo"></select>
+        </div>
+        <div class="campo-formulario">
+            <label>Ubicación:</label>
+            <select id="bus-ubicacion"></select>
+        </div>
+        <div class="campo-formulario">
+            <label>Estado:</label>
+            <select id="bus-estado">
+                <option value="Todos">Todos</option>
+                <option value="0">Operativo</option>
+                <option value="1">De baja o defectuoso</option>
+                <option value="2">En mantenimiento</option>
+            </select>
+        </div>
+        <button onclick="buscarRecursos()">Buscar</button>
+
+        <h4>Recursos</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>N. Serie</th>
+                    <th>Categoría</th>
+                    <th>Modelo</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-recursos-body">
+                </tbody>
+        </table>
+        <br>
+        <button onclick="nuevaFicha()">Añadir Recurso</button>
+        <br>
+        <br>
+        <h4>Ranking de reservas por área médica</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Área médica</th>
+                    <th>Reservas totales</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-ranking-body"></tbody>
+        </table>
+        <br>
+        <button onclick="enviarMinisterio()">Enviar reservas al Ministerio</button>
+        <br>
+        <br>
+        <button class="btn-salir" onclick="logout()">Salir</button>
+    </div>
+
+    <div id="vista-recurso" class="vista">
+        <header>Aplicación Gestor</header>
+        <h3>RECURSO</h3>
+        <h4>Datos recurso</h4>
+        <div class="campo-formulario">
+            <label>Categoría:</label>
+            <select id="f-categoria" onchange="actualizarModelosFicha()"></select>
+        </div>
+        <div class="campo-formulario">
+            <label>Modelo:</label>
+            <select id="f-modelo"></select>
+        </div>
+        <div class="campo-formulario">
+            <label>Núm. Serie:</label>
+            <input type="text" id="f-numserie">
+        </div>
+        <div class="campo-formulario">
+            <label>Ubicación:</label>
+            <select id="f-ubicacion"></select>
+        </div>
+        <div class="campo-formulario">
+            <label>Estado:</label>
+            <select id="f-estado">
+                <option value="0">Operativo</option>
+                <option value="1">De baja o defectuoso</option>
+                <option value="2">En mantenimiento</option>
+            </select>
+        </div>
+        <button onclick="guardarRecurso()">Guardar</button>
+
+        <h4>Reservas</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sanitario</th>
+                    <th>H. estim.</th>
+                    <th>F. Petición</th>
+                    <th>F. Inicio</th>
+                    <th>F. Fin</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-reservas-body">
+                </tbody>
+        </table>
+
+        <h4>Reseñas</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Sanitario</th>
+                    <th>Valoración</th>
+                    <th>Comentario</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-resenyas-body">
+                </tbody>
+        </table>
+        <br>
+        <button onclick="volverAlListado()">Volver al listado</button>
+    </div>
+
+    <script src="rest.js"></script>
+    <script src="main_gestor.js"></script>
+</body>
+</html>

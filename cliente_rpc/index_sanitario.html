@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Recursos Hospitalarios</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+
+<body>
+    <!-- PANTALLA A: Login -->
+    <div id="vista-login" class="vista activa">
+        <header>Aplicación Sanitario</header>
+        <h3>ACCESO</h3>
+        <div class="campo-formulario">
+            <label>Usuario:</label>
+            <input type="text" id="log-user">
+        </div>
+        <div class="campo-formulario">
+            <label>Contraseña:</label>
+            <input type="password" id="log-pass">
+        </div>
+        <br>
+        <button onclick="login()">Entrar</button>  <!--Lleva a la pantalla c -->
+        <button onclick="prepararRegistro()">Registrarse</button>  <!--Lleva a la pantalla b-->
+    </div>
+
+    <!-- PANTALLA B: Registro --> 
+    <div id="vista-registro" class="vista">
+        <header>Aplicación Sanitario</header>
+        <h3>DATOS SANITARIO</h3>
+        <div class="campo-formulario">
+            <label>Nombre:</label>
+            <input type="text" id="reg-nombre">
+        </div>
+        <div class="campo-formulario">
+            <label>Apellidos:</label>
+            <input type="text" id="reg-apellidos">
+        </div>
+        <div class="campo-formulario">
+            <label>Login:</label>
+            <input type="text" id="reg-login">
+        </div>
+        <div class="campo-formulario">
+            <label>Contraseña:</label>
+            <input type="password" id="reg-password">
+        </div>
+        <br>
+        <button onclick="guardarSanitario()">Guardar</button>
+        <button onclick="cancelarRegistro()">Cancelar</button>
+    </div>
+
+    <div id="vista-inicio" class="vista">
+        <header>Aplicación Sanitario</header>
+        <h3>INICIO</h3>
+        <p>Bienvenido <span id="nombre-bienvenida"></span> 
+            <button onclick="prepararEdicionGestor()">Editar datos</button>
+        </p>
+
+        <h4>Reservas pendientes</h4>
+        <table border="1" id="tabla-pendientes">
+            <thead>
+                <tr>
+                    <th>Categoria</th> 
+                    <th>Modelo</th> 
+                    <th>N.Serie</th> 
+                    <th>Ubic.</th> 
+                    <th>F.Pet.</th> 
+                    <th>H.Rest.</th> 
+                    <th></th> <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h4>Reservas realizadas</h4>
+        <table border="1" id="tabla-realizadas">
+            <thead>
+                <tr>
+                    <th>Categoria</th> 
+                    <th>Modelo</th> 
+                    <th>N.Serie</th> 
+                    <th>H.E.</th> 
+                    <th>F.Ini</th> 
+                    <th>F.Fin</th> 
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br>
+        <button onclick="prepararNuevaReserva()">Nueva reserva</button>
+        <br><br>
+
+        <h4>Formulario áreas salud</h4>
+        <div class="campo-formulario">
+            <label>Código Postal:</label>
+            <input type="text" id="f-codPostal">
+        </div>
+        <button onclick="asignarAreaSalud()">Asignar área</button>
+        <br><br>
+
+        <h4>Avisos</h4>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Origen</th>
+                    <th>Aviso</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-avisos-body"></tbody>
+        </table>
+        <br>
+        <button onclick="salir()">Salir</button>
+
+    </div>
+
+    <div id="vista-crear-resenya" class="vista">
+        <header>Aplicación Sanitario</header>
+        <h3>RESEÑA NUEVA</h3>
+        
+        <div class="campo-formulario">
+            <label>Recurso: <span id="resenya-nserie" style="font-weight:bold;"></span></label>
+            
+        </div>
+    
+        <div class="campo-formulario">
+            <label>Valoración:</label>
+            <select id="resenya-valor">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+
+        <div class="campo-formulario">
+            <label>Texto:</label>
+            <textarea id="resenya-texto" rows="3" cols="30"></textarea>
+        </div>
+
+        <br>
+        <button onclick="guardarResenya()">Guardar</button>
+        <button onclick="navegarA('vista-inicio')">Cancelar</button>
+    </div>
+
+    <div id="vista-nueva-reserva" class="vista">
+        <header>Aplicación Sanitario</header>
+        <h3>NUEVA RESERVA</h3>
+        <div class="campo-formulario">
+            <label>Categoría:</label>
+            <select id="f-categoria" onchange="actualizarModelos()"></select>
+        </div>
+        <div class="campo-formulario">
+            <label>Modelo:</label>
+            <select id="f-modelo"></select>
+        </div>
+        <div class="campo-formulario">
+            <label>T.est.uso:</label>
+            <input type="number" id="t_uso-valor" value="1" min="1">
+        </div>
+        <button onclick="actualizarTablaRecursos()">Buscar</button>
+        <br><br>
+
+        <table border="1" id="tabla-recursos-reserva">
+            <thead>
+                <tr>
+                    <th>N.Serie</th>
+                    <th>Ubicación</th>
+                    <th>H.Rest.</th>
+                    <th>Valoración</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br>
+        <button onclick="navegarA('vista-inicio')"> Cancelar </button>
+    </div>
+
+
+    <script src="rest.js"></script> 
+    <script src="rpc.js"></script> 
+    <script src="main_sanitario.js"></script>
+
+</body>

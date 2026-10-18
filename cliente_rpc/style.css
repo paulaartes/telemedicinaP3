@@ -1,0 +1,161 @@
+/* Paleta de Colores: Hospital Moderno */
+:root {
+    --clinical-blue: #3791cd;    /* Azul médico institucional */
+    --light-cyan: #e3f2fd;      /* Fondo de elementos suaves */
+    --emergency-red: #d32f2f;   /* Para botones de borrar o alertas */
+    --success-green: #2e7d32;   /* Para estados operativos */
+    --hospital-white: #ffffff;
+    --border-gray: #cfd8dc;
+    --text-main: #263238;       /* Gris muy oscuro para lectura clara */
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f7f6; /* Gris muy claro tipo pasillo de hospital */
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Contenedor de Vistas Estilo Ficha Médica */
+.vista {
+    display: none;
+    background: var(--hospital-white);
+    padding: 40px;
+    border-radius: 8px; /* Menos redondeado, más profesional */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 1000px;
+    border-top: 6px solid var(--clinical-blue); /* Franja superior institucional */
+}
+
+.vista.activa {
+    display: block;
+}
+
+/* Encabezados Institucionales */
+header {
+    background-color: #eceff1;
+    color: var(--clinical-blue);
+    padding: 15px;
+    border-radius: 4px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    border-left: 5px solid var(--clinical-blue);
+    text-transform: uppercase;
+}
+
+h3 {
+    color: var(--clinical-blue);
+    font-size: 1.5rem;
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-gray);
+    padding-bottom: 10px;
+}
+
+h4 {
+    background: var(--light-cyan);
+    padding: 8px 15px;
+    border-radius: 4px;
+    color: var(--clinical-blue);
+    margin-top: 30px;
+}
+
+/* Formuarios Limpios */
+.campo-formulario {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.campo-formulario label {
+    width: 150px;
+    font-weight: 600;
+    color: #455a64;
+    align-self: center;
+}
+
+input, select {
+    padding: 10px;
+    border: 1px solid var(--border-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    flex-grow: 1;
+    background-color: #fafafa;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--clinical-blue);
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.2);
+}
+
+/* Botones de Acción Médica */
+button {
+    background-color: var(--clinical-blue);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: background 0.2s;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #003d80;
+}
+
+.btn-salir {
+    background-color: #607d8b; /* Gris azulado para cerrar sesión */
+}
+
+button[onclick*="borrar"], .emergency {
+    background-color: var(--emergency-red);
+}
+
+/* Tablas de Inventario / Datos */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.95rem;
+}
+
+th {
+    background-color: #f8f9fa;
+    color: #546e7a;
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid var(--border-gray);
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background-color: #f1f8ff;
+}
+
+/* Estilos de Estado */
+.estado-0 { color: var(--success-green); font-weight: bold; } /* Operativo */
+.estado-1 { color: var(--emergency-red); font-weight: bold; }  /* De baja */
+.estado-2 { color: #f57c00; font-weight: bold; }             /* Mantenimiento */
+
+#nombre-bienvenida {
+    color: var(--clinical-blue);
+    text-decoration: underline;
+}
+
+/* Avisos WebSocket */
+.aviso-rojo  { background-color: #ffebee; }
+.aviso-azul  { background-color: #e3f2fd; }
+.aviso-verde { background-color: #e8f5e9; }
