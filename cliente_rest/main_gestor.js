@@ -66,7 +66,7 @@ function login() {
         if (status === 200) {
             idGestorLogueado = respuesta.id;
             tokenGestor = respuesta.token;
-            cargarCatalogos();   // Se pide después del token
+            cargarCatalogos();   // Se pide después del token, podemos pedirlos
             console.log("Token recibido:", tokenGestor);
             rest.get("/api/gestores/" + idGestorLogueado, function(status, g) {
                 document.getElementById("nombre-bienvenida").innerText = g.nombre + " " + g.apellidos;
@@ -563,7 +563,7 @@ function enviarMinisterio() {
 }
 
 
-
+// GET: ranking de reservas por área con los datos del Ministerio
 function cargarRanking() {
     rest.get(URL_MINISTERIO, function (status, envios) {
         if (status != 200) {
@@ -571,20 +571,43 @@ function cargarRanking() {
             return;
         }
 
-        // Se coge sólo el de ID más alto por si hay duplicados
-        var ultimo = {};
+        // 1. Para cada área y cada reserva, cuántas veces aparece en un envío (el máximo)
+        //    maximos[area][reserva] = nº de veces
+        var maximos = {};
         for (var i = 0; i < envios.length; i++) {
             var envio = envios[i];
-            if (!ultimo[envio.id_area] || envio.id > ultimo[envio.id_area].id) {
-                ultimo[envio.id_area] = envio;
+            if (!envio.datos) continue;
+
+            var area = envio.id_area;
+            if (!maximos[area]) {
+                maximos[area] = {};
+            }           
+            var cuenta = {}; // Contamos cuántas veces aparece cada reserva en ESTE envío
+            for (var j = 0; j < envio.datos.length; j++) {
+                var clave = JSON.stringify(envio.datos[j]);   // se pasa a texto
+                if (cuenta[clave]) {
+                    cuenta[clave]++;
+                } else {
+                    cuenta[clave] = 1;
+                }
+            }
+
+            // Si en este envío aparece más veces que en los anteriores, actualizamos el máximo
+            for (var c in cuenta) {
+                if (!maximos[area][c] || cuenta[c] > maximos[area][c]) {
+                    maximos[area][c] = cuenta[c];
+                }
             }
         }
 
+        // 2. Total de cada área = suma de esos máximos
         var ranking = [];
         for (var id = 1; id <= 18; id++) {
             var total = 0;
-            if (ultimo[id] && ultimo[id].datos) {
-                total = ultimo[id].datos.length;
+            if (maximos[id]) {
+                for (var r in maximos[id]) {
+                    total += maximos[id][r];
+                }
             }
             ranking.push({ nombre: NOMBRES_AREAS[id], total: total });
         }
@@ -603,7 +626,6 @@ function cargarRanking() {
         }
     });
 }
-
 
 
 
