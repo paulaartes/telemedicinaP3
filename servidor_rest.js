@@ -1,7 +1,8 @@
+require("dotenv").config();   // carga las variables del archivo .env
 var express = require("express");
 var app = express();
 
-var conexion = require('./conexion_mysql.js');
+var conexion = require('./conexion.js');
 var jwt = require("jsonwebtoken");
 var SECRETO_JWT = process.env.JWT_SECRET || "clave_secreta_solo_para_local";
 
@@ -276,7 +277,7 @@ app.delete("/api/recursos/:id", function (req, res) {
         "DELETE FROM recursos where id= ?", [req.params.id],
         function(err, resultado){
             if(err){
-                if(err.errno === 1451){   // clave ajena: hay reservas/reseñas asociadas
+                if(err.errno === "23503"){   // clave ajena: hay reservas/reseñas asociadas
                     return res.status(400).json("No se puede eliminar: el recurso tiene reservas o reseñas asociadas");
                 }
                 console.error(err); return res.status(500).json("Error del servidor");
@@ -370,3 +371,4 @@ git add .
 git commit -m "Descripción del cambio"
 git push
 */
+// Contraseña Supabase: Paula060820030709

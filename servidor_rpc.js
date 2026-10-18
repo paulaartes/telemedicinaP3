@@ -1,7 +1,7 @@
 //Es necesario instalar en la carpeta del servidor los modulos cors y express
 
 var rpc = require("./rpc.js"); 
-var conexion = require("./conexion_mysql.js");
+var conexion = require("./conexion.js");
 
 function obtenerCategorias(callback){
     conexion.query(
@@ -170,7 +170,7 @@ function obtenerRecursos(id, callback){
 
 function tiempoPendiente(idRecurso, callback) {
     conexion.query(
-        "SELECT SUM(horas_estimadas) AS total FROM reservas WHERE recurso = ? AND fecha_fin IS NULL",
+        "SELECT CAST(SUM(horas_estimadas) AS INTEGER) AS total FROM reservas WHERE recurso = ? AND fecha_fin IS NULL",
         [idRecurso],
         function(err, filas){
             if(err){
