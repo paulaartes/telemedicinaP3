@@ -562,8 +562,6 @@ function enviarMinisterio() {
     });
 }
 
-
-// GET: ranking de reservas por área con los datos del Ministerio
 function cargarRanking() {
     rest.get(URL_MINISTERIO, function (status, envios) {
         if (status != 200) {
@@ -571,49 +569,33 @@ function cargarRanking() {
             return;
         }
 
-        // 1. Para cada área y cada reserva, cuántas veces aparece en un envío (el máximo)
-        //    maximos[area][reserva] = nº de veces
-        var maximos = {};
+        // 1. Sumamos las reservas de todos los envíos de cada área
+        //    totales[id_area] = nº de reservas
+        var totales = {};
         for (var i = 0; i < envios.length; i++) {
             var envio = envios[i];
-            if (!envio.datos) continue;
+            if (!envio.datos) continue;   // por si algún envío no trae datos
 
-            var area = envio.id_area;
-            if (!maximos[area]) {
-                maximos[area] = {};
-            }           
-            var cuenta = {}; // Contamos cuántas veces aparece cada reserva en ESTE envío
-            for (var j = 0; j < envio.datos.length; j++) {
-                var clave = JSON.stringify(envio.datos[j]);   // se pasa a texto
-                if (cuenta[clave]) {
-                    cuenta[clave]++;
-                } else {
-                    cuenta[clave] = 1;
-                }
+            if (!totales[envio.id_area]) {
+                totales[envio.id_area] = 0;
             }
-
-            // Si en este envío aparece más veces que en los anteriores, actualizamos el máximo
-            for (var c in cuenta) {
-                if (!maximos[area][c] || cuenta[c] > maximos[area][c]) {
-                    maximos[area][c] = cuenta[c];
-                }
-            }
+            totales[envio.id_area] += envio.datos.length;
         }
 
-        // 2. Total de cada área = suma de esos máximos
+        // 2. Preparamos una fila por cada área (de la 1 a la 18)
         var ranking = [];
         for (var id = 1; id <= 18; id++) {
             var total = 0;
-            if (maximos[id]) {
-                for (var r in maximos[id]) {
-                    total += maximos[id][r];
-                }
+            if (totales[id]) {
+                total = totales[id];
             }
             ranking.push({ nombre: NOMBRES_AREAS[id], total: total });
         }
 
+        // 3. De más a menos reservas
         ranking.sort(function (a, b) { return b.total - a.total; });
 
+        // 4. Pintamos la tabla
         var tbody = document.getElementById("tabla-ranking-body");
         tbody.innerHTML = "";
         for (var k = 0; k < ranking.length; k++) {
@@ -626,6 +608,5 @@ function cargarRanking() {
         }
     });
 }
-
 
 
