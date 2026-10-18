@@ -43,7 +43,7 @@ res.send("msg") o res.json()--> para probar
 
 // Login para gestor
 app.post("/api/gestores/login", function (req, res) { 
-    console.log("Gestor: " + req.body.login) // req.body --> métodos POST y PUT
+    console.log("Gestor: " + req.body.login); // req.body --> métodos POST y PUT
     var login = req.body.login;
     var password = req.body.password;
 
