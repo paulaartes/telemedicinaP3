@@ -363,3 +363,10 @@ require("./servidor_rpc.js");
 // node servidor_rest.js
 // https://undefined.ua.es/telemedicina/api/datos
 // https://github.com/paulaartes/telemedicinaP3.git
+
+/*
+Para cambiar algo:
+git add .
+git commit -m "Descripción del cambio"
+git push
+*/
