@@ -375,6 +375,6 @@ require("./servidor_rpc.js");
 /*
 Para cambiar algo:
 git add .
-git commit -m "Descripción del cambio"
+git commit -m "ACTUALIZADO"
 git push
 */
