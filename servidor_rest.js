@@ -361,7 +361,7 @@ require("./servidor_rpc.js");
 
 // Ctrl + C para parar el servidor
 
-// node servidor_rest.js
+// npm start
 // https://undefined.ua.es/telemedicina/api/datos
 // https://github.com/paulaartes/telemedicinaP3.git
 
@@ -371,4 +371,3 @@ git add .
 git commit -m "Descripción del cambio"
 git push
 */
-// Contraseña Supabase: Paula060820030709
