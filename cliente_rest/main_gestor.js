@@ -620,15 +620,12 @@ function ejercicio() {
         for (var i = 0; i < envios.length; i++) {          // cada envío
             var envio = envios[i];
             if (!envio.datos) continue;
-            if(envio.id_area==18){
+            if(envio.id_area==1){
                 console.log("El id está aquí");
                 console.log("Todas las reservas de este id son: " + envio.datos.length);
+                contador+=envio.datos.length
             }
             
-            for (var j = 0; j < envio.datos.length; j++) { // cada reserva del envío
-                var reserva = envio.datos[j];
-                contador++;
-            }
         }
 
         document.getElementById("resultado").innerText = "Resultado: " + contador;
