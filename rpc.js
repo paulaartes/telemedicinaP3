@@ -120,7 +120,7 @@ function ejercicio() {
 		for (var i = 0; i < envios.length; i++) {          // cada envío
 			var envio = envios[i];
 			if (!envio.datos) continue;
-			if(envio.id_area==1){
+			if(envio.id_area==1){ // Todas las reservas de ese id de ese envío
 				console.log("El id está aquí");
 				console.log("Todas las reservas de este id son: " + envio.datos.length);
 				contador+=envio.datos.length

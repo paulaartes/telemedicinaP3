@@ -617,21 +617,24 @@ function ejercicio() {
         }
 
         var contador = 0;
-        var totEnvios=envios.length;
+        var reservas = 0;
         for (var i = 0; i < envios.length; i++) {          // cada envío
             var envio = envios[i];
+            reservas+=envio.datos.length;
             if (!envio.datos) continue;
-            contador+=envio.datos.length;            
+            if(envio.id_area==18){
+              contador+=envio.datos.length;  
+            }                      
         }
-        document.getElementById("resultado").innerText = "Envíos recibidos: " + contador + "<br>" + "Reservas totales: " + totEnvios;
+        var porcentaje = (contador/reservas).toFixed(2);
+        document.getElementById("resultado").innerText = "Urología: " + contador + " de " + " reservas (" + porcentaje + " %)";
     });
 }
 
 /*
-Ejercicio 1. Resumen del Ministerio.
-Añade un botón “Resumen” que muestre en un párrafo:
+Muestra qué porcentaje de todas las reservas del Ministerio son de Urología (área 18), con 2 decimales:
 
-Envíos recibidos: X · Reservas totales: Y
+Urología: 18 de 240 reservas (7.50 %)
 */
 
 
