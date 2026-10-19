@@ -626,8 +626,8 @@ function ejercicio() {
               contador+=envio.datos.length;  
             }                      
         }
-        var porcentaje = (contador/reservas).toFixed(2);
-        document.getElementById("resultado").innerText = "Urología: " + contador + " de " + " reservas (" + porcentaje + " %)";
+        var porcentaje = ((contador/reservas).toFixed(2))*100;
+        document.getElementById("resultado").innerText = "Urología: " + contador + " de " + reservas + " reservas (" + porcentaje + " %)";
     });
 }
 
