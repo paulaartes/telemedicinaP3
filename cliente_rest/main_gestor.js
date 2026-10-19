@@ -617,19 +617,21 @@ function ejercicio() {
         }
 
         var contador = 0;
+        var totEnvios=envios.length;
         for (var i = 0; i < envios.length; i++) {          // cada envío
             var envio = envios[i];
             if (!envio.datos) continue;
-            if(envio.id_area==1){
-                console.log("El id está aquí");
-                console.log("Todas las reservas de este id son: " + envio.datos.length);
-                contador+=envio.datos.length
-            }
-            
+            contador+=envio.datos.length;            
         }
-
-        document.getElementById("resultado").innerText = "Resultado: " + contador;
+        document.getElementById("resultado").innerText = "Envíos recibidos: " + contador + "<br>" + "Reservas totales: " + totEnvios;
     });
 }
+
+/*
+Ejercicio 1. Resumen del Ministerio.
+Añade un botón “Resumen” que muestre en un párrafo:
+
+Envíos recibidos: X · Reservas totales: Y
+*/
 
 

@@ -94,36 +94,43 @@ module.exports = {
 }
 
 /*
-1. Crear proyecto 
-cd C:\Users\Usuario\Desktop
-cordova create ProyectoExamen com.examen.app AppExamen
-cd ProyectoExamen
-cordova platform add android
+Dónde está cada dato: envio.id_area y envio.fecha están en el envío. nombre, categoría, horas_estimadas y las fechas 
+están en cada elemento de envio.datos.
+Contar envíos (contador++ en el bucle de fuera) no es lo mismo que contar reservas (envio.datos.length, o contador++ 
+en el bucle de dentro).
+La clave para decidirlo: si la condición mira algo del sobre (como id_area), te basta con el bucle de fuera. 
+Si mira algo de la hoja (como categoría o fecha_fin), necesitas entrar al bucle de dentro.
+Los tipos: id_area viene como número. Por eso uso == en lugar de ===, que también funciona si te lo dan como texto 
+("18").
+Los datos de otros alumnos son “sucios”: claves con y sin tilde, fechas en formatos distintos, null… Comprueba siempre 
+si algo puede venir vacío.
 
-2. Meter la web en www
-1. Borra lo que trae www de ejemplo: index.html, css, js e img.
-2. Copia dentro de www los archivos que os den (html, js, css).
-3. La página principal tiene que llamarse index.html. Si se llama de otra forma (por ejemplo
-index_sanitario.html), renómbrala
+        <button onclick="ejercicio()">Calcular</button>
+        <p id="resultado"></p>
 
-3. Cambios en index.html
-Añade cordova.js como primer script, antes de los demás. Es el que da acceso a los plugins
-(NFC) y lanza el evento deviceready. El archivo lo genera Cordova al compilar: no hay que
-copiarlo.
-<script src="cordova.js"></script>
-<script src="rest.js"></script>
-<script src="rpc.js"></script>
-<script src="main.js"></script>
-Si el HTML no la tiene, añade en el <head> la etiqueta para que se vea bien en el móvil:
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-4. Archivo config.xml
-Copiar y pegar el  el config.xml 
+function ejercicio() {
+	rest.get(URL_MINISTERIO, function (status, envios) {
+		if (status != 200) {
+			alert("Error al consultar al Ministerio");
+			return;
+		}
 
-5. Cambiar IP
-Cambiar IP_SERVIDOR_MOVIL, SERVIDOR, app en main_sanitario.js
+		var contador = 0;
+		for (var i = 0; i < envios.length; i++) {          // cada envío
+			var envio = envios[i];
+			if (!envio.datos) continue;
+			if(envio.id_area==1){
+				console.log("El id está aquí");
+				console.log("Todas las reservas de este id son: " + envio.datos.length);
+				contador+=envio.datos.length
+			}
+			
+		}
 
-6. nfc
-Copiar y pegar desde línea 14 hasta 96 de nfc.js
+		document.getElementById("resultado").innerText = "Envíos recibidos: " + contador + "<br>" + "Reservas totales:";
+	});
+}
+
 
 */
