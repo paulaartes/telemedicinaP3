@@ -572,6 +572,7 @@ function cargarRanking() {
         // 1. Sumamos las reservas de todos los envíos de cada área
         //    totales[id_area] = nº de reservas
         var totales = {};
+        console.log(envios.length);
         for (var i = 0; i < envios.length; i++) {
             var envio = envios[i];
             if (!envio.datos) continue;   // por si algún envío no trae datos
@@ -632,9 +633,8 @@ function ejercicio() {
 }
 
 /*
-Muestra qué porcentaje de todas las reservas del Ministerio son de Urología (área 18), con 2 decimales:
-
-Urología: 18 de 240 reservas (7.50 %)
+Muestra cuántas reservas del área 18 tienen fecha_fin a null, y qué porcentaje representan sobre las reservas del 
+área 18.
 */
 
 
