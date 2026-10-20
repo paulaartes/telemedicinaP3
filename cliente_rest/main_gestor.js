@@ -583,7 +583,7 @@ function cargarRanking() {
             totales[envio.id_area] += envio.datos.length;
             suma+=envio.datos.length;
         }
-        console.log(suma);
+        console.log("Suma de envíos: " + suma);
 
         // 2. Preparamos una fila por cada área (de la 1 a la 18)
         var ranking = [];
@@ -615,22 +615,52 @@ function cargarRanking() {
 function ejercicio() {
     rest.get(URL_MINISTERIO, function (status, envios) {
         if (status != 200) {
-            alert("Error al consultar al Ministerio");
+            console.log("Error al cargar el ranking:", status);
             return;
         }
 
-        var contador = 0;
-        var reservas = 0;
-        for (var i = 0; i < envios.length; i++) {          // cada envío
+        // 1. Sumamos las reservas de todos los envíos de cada área
+        //    totales[id_area] = nº de reservas
+        var totales = {};
+        var suma=0;
+        for (var i = 0; i < envios.length; i++) {
             var envio = envios[i];
-            reservas+=envio.datos.length;
-            if (!envio.datos) continue;
-            if(envio.id_area==18){
-              contador+=envio.datos.length;  
-            }                      
+            if (!envio.datos) continue;   // por si algún envío no trae datos
+
+            if (!totales[envio.id_area]) {
+                totales[envio.id_area] = 0;
+            }
+            totales[envio.id_area] += envio.datos.length;
+            suma+=envio.datos.length;
         }
-        var porcentaje = ((contador/reservas).toFixed(2))*100;
-        document.getElementById("resultado").innerText = "Urología: " + contador + " de " + reservas + " reservas (" + porcentaje + " %)";
+        console.log("Suma de envíos: " + suma);
+
+        // 2. Preparamos una fila por cada área (de la 1 a la 18)
+        var ranking = [];
+        for (var id = 1; id <= 18; id++) {
+            var total = 0;
+            if (totales[id]) {
+                total = totales[id];
+            }
+            var porcentaje = (total/suma).toFixed(2);
+            ranking.push({ nombre: NOMBRES_AREAS[id], total: total, p: porcentaje });
+        }
+
+        // 3. De más a menos reservas
+        ranking.sort(function (a, b) { return b.total - a.total; });
+
+        // 4. Pintamos la tabla
+        var tbody = document.getElementById("tabla-ranking-body2");
+        tbody.innerHTML = "";
+        for (var k = 0; k < ranking.length; k++) {
+            tbody.innerHTML +=
+                "<tr>" +
+                    "<td>" + (k + 1) + "</td>" +
+                    "<td>" + ranking[k].nombre + "</td>" +
+                    "<td>" + ranking[k].total + "</td>" +
+                    "<td>" + ranking[k].p + "</td>" +
+                "</tr>";
+        }
     });
 }
 
