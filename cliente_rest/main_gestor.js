@@ -572,7 +572,7 @@ function cargarRanking() {
         // 1. Sumamos las reservas de todos los envíos de cada área
         //    totales[id_area] = nº de reservas
         var totales = {};
-        console.log(envios.length);
+        var suma=0;
         for (var i = 0; i < envios.length; i++) {
             var envio = envios[i];
             if (!envio.datos) continue;   // por si algún envío no trae datos
@@ -581,7 +581,9 @@ function cargarRanking() {
                 totales[envio.id_area] = 0;
             }
             totales[envio.id_area] += envio.datos.length;
+            suma+=envio.datos.length;
         }
+        console.log(suma);
 
         // 2. Preparamos una fila por cada área (de la 1 a la 18)
         var ranking = [];
