@@ -9,7 +9,7 @@ var pool = new Pool({
 // Al arrancar, comprobamos que la conexión funciona
 pool.query("SELECT 1", function (err) {
     if (err) {
-        console.error("Error en la conexión de la base de datos:", err.message);
+        console.error("Error en la conexión de la base de datos:", err.code, err.message, err.errors ? err.errors.map(function (e) { return e.code + " " + e.address + ":" + e.port; }) : "");
     } else {
         console.log("Conectado a la base de datos de Supabase");
     }
