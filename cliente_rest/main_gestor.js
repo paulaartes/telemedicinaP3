@@ -642,7 +642,7 @@ function ejercicio() {
             if (totales[id]) {
                 total = totales[id];
             }
-            var porcentaje = (total/suma).toFixed(2);
+            var porcentaje = ((total/suma).toFixed(2))*100;
             ranking.push({ nombre: NOMBRES_AREAS[id], total: total, p: porcentaje });
         }
 
