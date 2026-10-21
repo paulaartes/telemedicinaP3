@@ -613,53 +613,51 @@ function cargarRanking() {
     });
 }
 
-function ejercicio() {
+// Ranking de médicos con más reservas (datos del Ministerio)
+function rankingMedicos() {
     rest.get(URL_MINISTERIO, function (status, envios) {
         if (status != 200) {
-            console.log("Error al cargar el ranking:", status);
+            alert("Error al consultar al Ministerio (código " + status + ")");
             return;
         }
 
-        // 1. Sumamos las reservas de todos los envíos de cada área
-        //    totales[id_area] = nº de reservas
-        var totales = {};
-        var suma=0;
-        for (var i = 0; i < envios.length; i++) {
+        // 1. Contamos las reservas de cada médico
+        //    cuenta["nombre apellidos"] = { nombre, area, total }
+        var cuenta = {};
+        for (var i = 0; i < envios.length; i++) {                // cada envío (sobre)
             var envio = envios[i];
-            if (!envio.datos) continue;   // por si algún envío no trae datos
+            if (!envio.datos) continue;
 
-            if (!totales[envio.id_area]) {
-                totales[envio.id_area] = 0;
+            for (var j = 0; j < envio.datos.length; j++) {       // cada reserva (hoja)
+                var reserva = envio.datos[j];
+                var medico = reserva.nombre + " " + reserva.apellidos;
+
+                if (!cuenta[medico]) {
+                    cuenta[medico] = { nombre: medico, area: envio.id_area, total: 0 };
+                }
+                cuenta[medico].total++;
             }
-            totales[envio.id_area] += envio.datos.length;
-            suma+=envio.datos.length;
         }
-        console.log("Suma de envíos: " + suma);
 
-        // 2. Preparamos una fila por cada área (de la 1 a la 18)
+        // 2. Pasamos el objeto a un array para poder ordenarlo
         var ranking = [];
-        for (var id = 1; id <= 18; id++) {
-            var total = 0;
-            if (totales[id]) {
-                total = totales[id];
-            }
-            var porcentaje = ((total/suma).toFixed(2))*100;
-            ranking.push({ nombre: NOMBRES_AREAS[id], total: total, p: porcentaje });
+        for (var m in cuenta) {
+            ranking.push(cuenta[m]);
         }
 
         // 3. De más a menos reservas
         ranking.sort(function (a, b) { return b.total - a.total; });
 
-        // 4. Pintamos la tabla
-        var tbody = document.getElementById("tabla-ranking-body2");
+        // 4. Pintamos solo los 10 primeros
+        var tbody = document.getElementById("tabla-medicos-body");
         tbody.innerHTML = "";
-        for (var k = 0; k < ranking.length; k++) {
+        for (var k = 0; k < ranking.length && k < 10; k++) {
             tbody.innerHTML +=
                 "<tr>" +
                     "<td>" + (k + 1) + "</td>" +
                     "<td>" + ranking[k].nombre + "</td>" +
+                    "<td>" + NOMBRES_AREAS[ranking[k].area] + "</td>" +
                     "<td>" + ranking[k].total + "</td>" +
-                    "<td>" + ranking[k].p + "</td>" +
                 "</tr>";
         }
     });

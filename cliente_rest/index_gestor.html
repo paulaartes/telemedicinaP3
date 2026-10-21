@@ -113,19 +113,18 @@
         <button onclick="enviarMinisterio()">Enviar reservas al Ministerio</button>
         <br>
         <br>
-        <button onclick="ejercicio()">Calcular</button>
-        <br>
-        <h4>Ranking de reservas por área médica</h4>
+        <h4>Ranking de médicos con más reservas</h4>
+        <button onclick="rankingMedicos()">Calcular</button>
         <table>
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Área médica</th>
-                    <th>Reservas totales</th>
-                    <th>%</th>
+                    <th>Médico</th>
+                    <th>Área</th>
+                    <th>Reservas</th>
                 </tr>
             </thead>
-            <tbody id="tabla-ranking-body2"></tbody>
+            <tbody id="tabla-medicos-body"></tbody>
         </table>
         <br>
         <button class="btn-salir" onclick="logout()">Salir</button>
