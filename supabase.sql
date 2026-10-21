@@ -206,3 +206,16 @@ SELECT setval(pg_get_serial_sequence('modelos','id'), (SELECT MAX(id) FROM model
 SELECT setval(pg_get_serial_sequence('recursos','id'), (SELECT MAX(id) FROM recursos));
 SELECT setval(pg_get_serial_sequence('reservas','id'), (SELECT MAX(id) FROM reservas));
 SELECT setval(pg_get_serial_sequence('resenyas','id'), (SELECT MAX(id) FROM resenyas));
+
+-- Supabase activa RLS (Row Level Security) automáticamente en las tablas nuevas.
+-- Con RLS activado y sin reglas, la clave pública (publishable/anon) recibe 0 filas.
+-- Lo desactivamos para que el servidor (supabase-js) pueda leer y escribir.
+ALTER TABLE gestores    DISABLE ROW LEVEL SECURITY;
+ALTER TABLE sanitarios  DISABLE ROW LEVEL SECURITY;
+ALTER TABLE categorias  DISABLE ROW LEVEL SECURITY;
+ALTER TABLE ubicaciones DISABLE ROW LEVEL SECURITY;
+ALTER TABLE modelos     DISABLE ROW LEVEL SECURITY;
+ALTER TABLE recursos    DISABLE ROW LEVEL SECURITY;
+ALTER TABLE reservas    DISABLE ROW LEVEL SECURITY;
+ALTER TABLE resenyas    DISABLE ROW LEVEL SECURITY;
+ALTER TABLE areas_salud DISABLE ROW LEVEL SECURITY;

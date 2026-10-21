@@ -552,7 +552,8 @@ function enviarMinisterio() {
 
     console.log("Datos a enviar:", envio);
 
-    rest.post(URL_MINISTERIO, envio, function (status) {
+    rest.post(URL_MINISTERIO, envio, function (status, respuesta) {
+        console.log("Respuesta del Ministerio:", status, respuesta);
         if (status >= 200 && status < 300) {
             alert("Reservas enviadas correctamente");
             cargarRanking();
