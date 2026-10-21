@@ -563,6 +563,14 @@ function enviarMinisterio() {
     });
 }
 
+
+function reservaValida(reserva) {
+    if (!reserva) return false;
+    if (!reserva.nombre) return false;      
+    if (!reserva.apellidos) return false;   
+    return true;
+}
+
 function cargarRanking() {
     rest.get(URL_MINISTERIO, function (status, envios) {
         if (status != 200) {
@@ -570,8 +578,6 @@ function cargarRanking() {
             return;
         }
 
-        // 1. Sumamos las reservas de todos los envíos de cada área
-        //    totales[id_area] = nº de reservas
         var totales = {};
         var suma=0;
         for (var i = 0; i < envios.length; i++) {
@@ -581,10 +587,16 @@ function cargarRanking() {
             if (!totales[envio.id_area]) {
                 totales[envio.id_area] = 0;
             }
-            totales[envio.id_area] += envio.datos.length;
-            suma+=envio.datos.length;
+
+            // Recorremos las reservas del envío y contamos solo las válidas
+            for (var j = 0; j < envio.datos.length; j++) {
+                if (reservaValida(envio.datos[j])) {
+                    totales[envio.id_area]++;
+                    suma++;
+                }
+            }
         }
-        console.log("Suma de envíos: " + suma);
+        console.log("Total de reservas válidas: " + suma);
 
         // 2. Preparamos una fila por cada área (de la 1 a la 18)
         var ranking = [];
@@ -613,7 +625,7 @@ function cargarRanking() {
     });
 }
 
-// Ranking de médicos con más reservas (datos del Ministerio)
+
 function rankingMedicos() {
     rest.get(URL_MINISTERIO, function (status, envios) {
         if (status != 200) {
@@ -621,15 +633,15 @@ function rankingMedicos() {
             return;
         }
 
-        // 1. Contamos las reservas de cada médico
-        //    cuenta["nombre apellidos"] = { nombre, area, total }
         var cuenta = {};
-        for (var i = 0; i < envios.length; i++) {                // cada envío (sobre)
+        for (var i = 0; i < envios.length; i++) {                // cada envío 
             var envio = envios[i];
             if (!envio.datos) continue;
 
-            for (var j = 0; j < envio.datos.length; j++) {       // cada reserva (hoja)
+            for (var j = 0; j < envio.datos.length; j++) {       // cada reserva 
                 var reserva = envio.datos[j];
+                if (!reservaValida(reserva)) continue;   
+
                 var medico = reserva.nombre + " " + reserva.apellidos;
 
                 if (!cuenta[medico]) {
@@ -663,9 +675,6 @@ function rankingMedicos() {
     });
 }
 
-/*
-Muestra cuántas reservas del área 18 tienen fecha_fin a null, y qué porcentaje representan sobre las reservas del 
-área 18.
-*/
+
 
 
