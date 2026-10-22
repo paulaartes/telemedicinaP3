@@ -626,54 +626,6 @@ function cargarRanking() {
 }
 
 
-function rankingMedicos() {
-    rest.get(URL_MINISTERIO, function (status, envios) {
-        if (status != 200) {
-            alert("Error al consultar al Ministerio (código " + status + ")");
-            return;
-        }
-
-        var cuenta = {};
-        for (var i = 0; i < envios.length; i++) {                // cada envío 
-            var envio = envios[i];
-            if (!envio.datos) continue;
-
-            for (var j = 0; j < envio.datos.length; j++) {       // cada reserva 
-                var reserva = envio.datos[j];
-                if (!reservaValida(reserva)) continue;   
-
-                var medico = reserva.nombre + " " + reserva.apellidos;
-
-                if (!cuenta[medico]) {
-                    cuenta[medico] = { nombre: medico, area: envio.id_area, total: 0 };
-                }
-                cuenta[medico].total++;
-            }
-        }
-
-        // 2. Pasamos el objeto a un array para poder ordenarlo
-        var ranking = [];
-        for (var m in cuenta) {
-            ranking.push(cuenta[m]);
-        }
-
-        // 3. De más a menos reservas
-        ranking.sort(function (a, b) { return b.total - a.total; });
-
-        // 4. Pintamos solo los 10 primeros
-        var tbody = document.getElementById("tabla-medicos-body");
-        tbody.innerHTML = "";
-        for (var k = 0; k < ranking.length && k < 10; k++) {
-            tbody.innerHTML +=
-                "<tr>" +
-                    "<td>" + (k + 1) + "</td>" +
-                    "<td>" + ranking[k].nombre + "</td>" +
-                    "<td>" + NOMBRES_AREAS[ranking[k].area] + "</td>" +
-                    "<td>" + ranking[k].total + "</td>" +
-                "</tr>";
-        }
-    });
-}
 
 
 
