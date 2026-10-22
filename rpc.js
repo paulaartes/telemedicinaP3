@@ -133,4 +133,19 @@ function ejercicio() {
 }
 
 
+        <h4>Ranking de médicos con más reservas</h4>
+        <button onclick="rankingMedicos()">Calcular</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Médico</th>
+                    <th>Área</th>
+                    <th>Reservas</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-medicos-body"></tbody>
+        </table>
+
+
 */
